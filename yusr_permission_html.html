@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام استئذان يسر</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      max-width: 600px;
+      width: 100%;
+      overflow: hidden;
+      animation: slideUp 0.5s ease;
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 40px 30px;
+      text-align: center;
+      color: white;
+    }
+    
+    .logo {
+      font-size: 60px;
+      margin-bottom: 10px;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    
+    .header h1 {
+      font-size: 32px;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+    
+    .header p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+    
+    .form-container {
+      padding: 40px 30px;
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 600;
+      font-size: 15px;
+    }
+    
+    .form-group label span {
+      color: #e74c3c;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .form-group textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+    
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+    
+    .submit-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .message {
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: none;
+      animation: slideDown 0.3s ease;
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 2px solid #c3e6cb;
+      display: block;
+    }
+    
+    .message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 2px solid #f5c6cb;
+      display: block;
+    }
+    
+    .message strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .loading.show {
+      display: block;
+    }
+    
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background: #f8f9fa;
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">📝</div>
+      <h1>نظام استئذان يسر</h1>
+      <p>نموذج طلب الاستئذان الإلكتروني</p>
+    </div>
+    
+    <div class="form-container">
+      <div id="message" class="message"></div>
+      
+      <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p style="margin-top: 10px; color: #666;">جاري الإرسال...</p>
+      </div>
+      
+      <form id="permissionForm">
+        <div class="form-group">
+          <label>اسم الطالب <span>*</span></label>
+          <input type="text" id="studentName" name="studentName" required placeholder="أدخل الاسم الكامل">
+        </div>
+        
+        <div class="form-group">
+          <label>رقم السجل المدني <span>*</span></label>
+          <input type="text" id="civilId" name="civilId" required placeholder="أدخل رقم السجل المدني" pattern="[0-9]{10}" title="يجب أن يكون 10 أرقام">
+        </div>
+        
+        <div class="form-group">
+          <label>رقم جوال واتساب ولي الأمر <span>*</span></label>
+          <input type="tel" id="whatsapp" name="whatsapp" required placeholder="05xxxxxxxx" pattern="05[0-9]{8}" title="يجب أن يبدأ بـ 05 ويتكون من 10 أرقام">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>الصف الدراسي <span>*</span></label>
+            <select id="grade" name="grade" required>
+              <option value="">اختر الصف</option>
+              <option value="الأول الثانوي">الأول الثانوي</option>
+              <option value="الثاني الثانوي">الثاني الثانوي</option>
+              <option value="الثالث الثانوي">الثالث الثانوي</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>الفصل <span>*</span></label>
+            <select id="class" name="class" required>
+              <option value="">اختر الفصل</option>
+              <option value="فصل 1">فصل 1</option>
+              <option value="فصل 2">فصل 2</option>
+              <option value="فصل 3">فصل 3</option>
+              <option value="فصل 4">فصل 4</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>تاريخ الاستئذان <span>*</span></label>
+          <input type="date" id="permissionDate" name="permissionDate" required>
+        </div>
+        
+        <div class="form-group">
+          <label>سبب الاستئذان <span>*</span></label>
+          <textarea id="reason" name="reason" required placeholder="اكتب سبب الاستئذان بالتفصيل..."></textarea>
+        </div>
+        
+        <button type="submit" class="submit-btn" id="submitBtn">
+          📨 إرسال طلب الاستئذان
+        </button>
+      </form>
+    </div>
+    
+    <div class="footer">
+      © 2024 نظام استئذان يسر | جميع الحقوق محفوظة
+    </div>
+  </div>
+
+  <script>
+    // ============================================
+    // تعديل هذا الرابط: ضع رابط Web App الخاص بك
+    // ============================================
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby90MHYBFpqWuMk0PdERCdLW5sPFJ7a40-Ad-aUqvEZIEfKaqVhfkHwy2dQZRsUYeHc/exec';
+    // ============================================
+    
+    const form = document.getElementById('permissionForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const messageDiv = document.getElementById('message');
+    const loadingDiv = document.getElementById('loading');
+    
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // إخفاء الرسائل السابقة
+      messageDiv.style.display = 'none';
+      messageDiv.className = 'message';
+      
+      // عرض التحميل
+      loadingDiv.classList.add('show');
+      submitBtn.disabled = true;
+      
+      // جمع البيانات
+      const formData = {
+        الاسم: document.getElementById('studentName').value,
+        رقم_السجل: document.getElementById('civilId').value,
+        الصف: document.getElementById('grade').value,
+        الفصل: document.getElementById('class').value,
+        تاريخ_الاستئذان: document.getElementById('permissionDate').value,
+        السبب: document.getElementById('reason').value
+      };
+      
+      try {
+        // إرسال البيانات
+        const response = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+        });
+        
+        // عرض رسالة النجاح
+        messageDiv.className = 'message success';
+        messageDiv.innerHTML = `
+          <strong>✅ تم إرسال الطلب بنجاح!</strong>
+          <p>تم استلام طلب الاستئذان الخاص بك وسيتم مراجعته قريباً.</p>
+          <p>شكراً لاستخدامك نظام استئذان يسر 💙</p>
+        `;
+        
+        // مسح النموذج
+        form.reset();
+        
+      } catch (error) {
+        // عرض رسالة الخطأ
+        messageDiv.className = 'message error';
+        messageDiv.innerHTML = `
+          <strong>❌ حدث خطأ!</strong>
+          <p>عذراً، لم نتمكن من إرسال طلبك. يرجى المحاولة مرة أخرى.</p>
+        `;
+      } finally {
+        // إخفاء التحميل وإعادة تفعيل الزر
+        loadingDiv.classList.remove('show');
+        submitBtn.disabled = false;
+        
+        // التمرير للأعلى لعرض الرسالة
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+    
+    // التحقق من رقم السجل المدني
+    document.getElementById('civilId').addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
+    });
+  </script>
+</body>
+</html>
